@@ -180,9 +180,9 @@ type CardPaymentInput struct {
 	GatewayBuyerUUID string `json:"gateway_buyer_uuid	"`
 }
 
-// ProcessCardPayment allows the ecommerce website to process an order using stored cards directly
+// CardPayment allows the ecommerce website to process an order using stored cards directly
 // without redirecting the user to payment gateway page.
-func (cln *Client) ProcessCardPayment(ctx context.Context, cardPaymentInput CardPaymentInput) (Response, error) {
+func (cln *Client) CardPayment(ctx context.Context, cardPaymentInput CardPaymentInput) (Response, error) {
 	url := fmt.Sprintf("%s/%s/checkout/card-payment", cln.host, version)
 
 	var resp Response
@@ -193,9 +193,9 @@ func (cln *Client) ProcessCardPayment(ctx context.Context, cardPaymentInput Card
 	return resp, nil
 }
 
-// ProcessWalletPayment  api allows the ecommerce website to process an order using mobile wallets directly.
+// WalletPayment  api allows the ecommerce website to process an order using mobile wallets directly.
 // trigger this api call to reiceve a PUSH ussd.
-func (cln *Client) ProcessWalletPayment(ctx context.Context, transactionID uuid.UUID, orderID uuid.UUID, phone string) (Response, error) {
+func (cln *Client) WalletPayment(ctx context.Context, transactionID uuid.UUID, orderID uuid.UUID, phone string) (Response, error) {
 	url := fmt.Sprintf("%s/%s/checkout/wallet-payment", cln.host, version)
 
 	body := struct {
