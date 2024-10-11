@@ -1,6 +1,8 @@
 package client
 
-import "fmt"
+import (
+	"encoding/json"
+)
 
 type Error struct {
 	TransactionId string         `json:"transid"`
@@ -20,6 +22,12 @@ type Response struct {
 	Data       []map[string]any `json:"data"`
 }
 
-func (re *Error) Error() string {
-	return fmt.Sprintf("request error: statuscode: %d, message: %s, data: %v", re.statuscode, re.Message, re.Data)
+// Error is the implementation of the error interface.
+func (re Error) Error() string {
+	d, err := json.Marshal(re)
+	if err != nil {
+		return err.Error()
+	}
+
+	return string(d)
 }

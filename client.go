@@ -125,7 +125,7 @@ func do(ctx context.Context, cln *Client, method string, url string, body any) (
 		}
 
 		trustedErr.statuscode = resp.StatusCode
-		return nil, fmt.Errorf("error: response: %s", trustedErr.Error())
+		return nil, fmt.Errorf("error: response: %w", trustedErr)
 	}
 
 	return resp, nil
