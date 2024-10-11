@@ -12,6 +12,14 @@ type Error struct {
 	statuscode    int
 }
 
+type Response struct {
+	Reference  string           `json:"reference"`
+	ResultCode string           `json:"resultcode"`
+	Result     string           `json:"result"`
+	Message    string           `json:"message"`
+	Data       []map[string]any `json:"data"`
+}
+
 func (re *Error) Error() string {
-	return fmt.Sprintf("request error: statuscode: %d, transactionID: %s, reference: %s, resultcode: %s, result: %s, message: %s, data: %v", re.statuscode, re.TransactionId, re.Reference, re.ResultCode, re.Result, re.Message, re.Data)
+	return fmt.Sprintf("request error: statuscode: %d, message: %s, data: %v", re.statuscode, re.Message, re.Data)
 }
