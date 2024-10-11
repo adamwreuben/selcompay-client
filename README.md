@@ -33,7 +33,7 @@ func main() {
 func run() error {
 	host := "https://apigw.selcommobile.com"
 	apiKey := os.Getenv("SELCOMAPIKEY")
-    apiSecret := os.Getenv("SELCOMSECRETKEY")
+    	apiSecret := os.Getenv("SELCOMSECRETKEY")
 
 	cln := client.New(host, apiKey, apiSecret)
 
