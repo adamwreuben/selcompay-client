@@ -160,13 +160,16 @@ func base64Encode(token []byte) string {
 }
 
 func constructHeaderValues(cln *Client, body *bytes.Buffer) (string, string, string, error) {
-	var signedFields string
+	var (
+		signedFields string
+		digest       string
+	)
+	now := time.Now().Format(time.RFC3339)
 
 	var jsonData map[string]any
 	if err := json.Unmarshal(body.Bytes(), &jsonData); err != nil {
-		return "", "", "", fmt.Errorf("unmarshal error: %w", err)
+		return signedFields, digest, now, fmt.Errorf("unmarshal error: %w", err)
 	}
-	now := time.Now().Format(time.RFC3339)
 
 	data := fmt.Sprintf("timestamp=%s", now)
 	for k, v := range jsonData {
@@ -174,15 +177,16 @@ func constructHeaderValues(cln *Client, body *bytes.Buffer) (string, string, str
 		if len(signedFields) == 0 {
 			signedFields = k
 		} else {
-			signedFields = signedFields + "," + k
+			signedFields = strings.Join([]string{signedFields, k}, ",")
 		}
 	}
 
 	mac := hmac.New(sha256.New, []byte(cln.apiSecret))
 	_, err := mac.Write([]byte(data))
 	if err != nil {
-		return "", "", "", fmt.Errorf("create signature: error: %w", err)
+		return signedFields, digest, now, fmt.Errorf("create signature: error: %w", err)
 	}
+	digest = base64Encode(mac.Sum(nil))
 
-	return signedFields, base64Encode(mac.Sum(nil)), now, nil
+	return signedFields, digest, now, nil
 }
