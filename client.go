@@ -37,8 +37,13 @@ var defaultClient = http.Client{
 	},
 }
 
+// Logger represents a function that will be called to add information
+// to the user's application logs.
+type Logger func(context.Context, string, ...any)
+
 // Client represents a client that can talk to the selcompay API service.
 type Client struct {
+	log       Logger
 	host      string
 	apiKey    string
 	apiSecret string
@@ -91,6 +96,11 @@ func (cln *Client) do(ctx context.Context, method string, url string, body any, 
 }
 
 func do(ctx context.Context, cln *Client, method string, url string, body any) (*http.Response, error) {
+	cln.log(ctx, "do: rawRequest: started", "method", method, "endpoint", url)
+	defer func() {
+		cln.log(ctx, "do: rawRequest: completed", "status", url)
+	}()
+
 	var b bytes.Buffer
 	if body != nil {
 		if err := json.NewEncoder(&b).Encode(body); err != nil {
@@ -107,6 +117,9 @@ func do(ctx context.Context, cln *Client, method string, url string, body any) (
 	if err := cln.setHeaders(req, &b); err != nil {
 		return nil, err
 	}
+
+	// Log the Headers (Testing)
+	cln.log(ctx, fmt.Sprintf("%v", req.Header))
 
 	resp, err := cln.http.Do(req)
 	if err != nil {
