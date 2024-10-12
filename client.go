@@ -179,14 +179,14 @@ func constructHeaders(cln *Client, params *bytes.Buffer) (string, string, string
 		digest       string
 	)
 
-	now := time.Now().Format(time.RFC3339)
+	timestamp := time.Now().Format(time.RFC3339)
 
 	var jsonData map[string]any
 	if err := json.Unmarshal(params.Bytes(), &jsonData); err != nil {
-		return signedFields, digest, now, fmt.Errorf("unmarshal error: %w", err)
+		return signedFields, digest, timestamp, fmt.Errorf("unmarshal error: %w", err)
 	}
 
-	data := fmt.Sprintf("timestamp=%s", now)
+	data := fmt.Sprintf("timestamp=%s", timestamp)
 	for k, v := range jsonData {
 		data = fmt.Sprintf("%s&%s=%v", data, k, v)
 		if signedFields == "" {
@@ -200,9 +200,10 @@ func constructHeaders(cln *Client, params *bytes.Buffer) (string, string, string
 	mac := hmac.New(sha256.New, []byte(cln.apiSecret))
 	_, err := mac.Write([]byte(data))
 	if err != nil {
-		return signedFields, digest, now, fmt.Errorf("create signature: error: %w", err)
+		return signedFields, digest, timestamp, fmt.Errorf("create signature: error: %w", err)
 	}
+
 	digest = base64Encode(mac.Sum(nil))
 
-	return signedFields, digest, now, nil
+	return signedFields, digest, timestamp, nil
 }

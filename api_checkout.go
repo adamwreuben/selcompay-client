@@ -116,8 +116,14 @@ func (cln *Client) CancelOrder(ctx context.Context, orderID string) (Response, e
 func (cln *Client) CheckOrder(ctx context.Context, orderID string) (Response, error) {
 	url := fmt.Sprintf("%s/%s/checkout/order-status?order_id=%s", cln.host, version, orderID)
 
+	body := struct {
+		OrderID string `json:"order_id"`
+	}{
+		OrderID: orderID,
+	}
+
 	var resp Response
-	if err := cln.do(ctx, http.MethodGet, url, nil, &resp); err != nil {
+	if err := cln.do(ctx, http.MethodGet, url, body, &resp); err != nil {
 		return Response{}, err
 	}
 
