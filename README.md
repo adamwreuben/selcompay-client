@@ -1,5 +1,10 @@
 # Selcompay Go Client
 
+[![CircleCI](https://dl.circleci.com/status-badge/img/circleci/Cy6tWW4wpE69Ftb8vdTAN9/E2TBj5h2YvKmwX36hcykvy/tree/main.svg?style=svg)](https://app.circleci.com/pipelines/github/Jkarage/selcompay-client)
+[![Go Report Card](https://goreportcard.com/badge/github.com/jkarage/selcompay-client)](https://goreportcard.com/report/github.com/jkarage/selcompay-client)
+[![go.mod Go version](https://img.shields.io/badge/Go-v1-blue)](https://github.com/Jkarage/selcompay-client)
+
+
 Copyright 2024 Tausi Africa
 
 ### Description
