@@ -21,7 +21,7 @@ import (
 	"os"
 	"time"
 
-	"github.com/Jkarage/selcompay-client"
+	"github.com/jkarage/selcompay-client"
 )
 
 func main() {
