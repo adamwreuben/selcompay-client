@@ -133,7 +133,7 @@ func (cln *Client) Orders(ctx context.Context, startDate string, endDate string)
 		To   string `json:"todate"`
 	}{
 		From: startDate,
-		To:   startDate,
+		To:   endDate,
 	}
 
 	var resp Response
