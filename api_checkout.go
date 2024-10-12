@@ -189,7 +189,7 @@ type CardPaymentInput struct {
 	OrderID          string `json:"order_id"`
 	CardToken        string `json:"card_token"`
 	BuyerUserID      string `json:"buyer_userid"`
-	GatewayBuyerUUID string `json:"gateway_buyer_uuid	"`
+	GatewayBuyerUUID string `json:"gateway_buyer_uuid"`
 }
 
 // CardPayment allows the ecommerce website to process an order using stored cards directly

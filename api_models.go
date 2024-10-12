@@ -5,7 +5,7 @@ import (
 )
 
 type Error struct {
-	TransactionId string           `json:"transid"`
+	TransactionID string           `json:"transid"`
 	Reference     string           `json:"reference"`
 	ResultCode    string           `json:"resultcode"`
 	Result        string           `json:"result"`
