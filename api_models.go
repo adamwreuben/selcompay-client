@@ -5,12 +5,12 @@ import (
 )
 
 type Error struct {
-	TransactionId string         `json:"transid"`
-	Reference     string         `json:"reference"`
-	ResultCode    string         `json:"resultcode"`
-	Result        string         `json:"result"`
-	Message       string         `json:"message"`
-	Data          map[string]any `json:"data"`
+	TransactionId string           `json:"transid"`
+	Reference     string           `json:"reference"`
+	ResultCode    string           `json:"resultcode"`
+	Result        string           `json:"result"`
+	Message       string           `json:"message"`
+	Data          []map[string]any `json:"data"`
 	statuscode    int
 }
 

@@ -190,7 +190,7 @@ func constructHeaders(cln *Client, params *bytes.Buffer) (string, string, string
 	for k, v := range jsonData {
 		data = fmt.Sprintf("%s&%s=%v", data, k, v)
 		if signedFields == "" {
-			signedFields = "timestamp," + k
+			signedFields = k
 		} else {
 			signedFields = strings.Join([]string{signedFields, k}, ",")
 		}
