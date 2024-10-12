@@ -128,8 +128,16 @@ func (cln *Client) CheckOrder(ctx context.Context, orderID string) (Response, er
 func (cln *Client) Orders(ctx context.Context, startDate string, endDate string) (Response, error) {
 	url := fmt.Sprintf("%s/%s/checkout/list-orders?fromdate=%s&todate=%s", cln.host, version, startDate, endDate)
 
+	body := struct {
+		From string `json:"fromdate"`
+		To   string `json:"todate"`
+	}{
+		From: startDate,
+		To:   startDate,
+	}
+
 	var resp Response
-	if err := cln.do(ctx, http.MethodGet, url, nil, &resp); err != nil {
+	if err := cln.do(ctx, http.MethodGet, url, body, &resp); err != nil {
 		return Response{}, err
 	}
 

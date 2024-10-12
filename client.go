@@ -145,7 +145,7 @@ func do(ctx context.Context, cln *Client, method string, url string, body any) (
 	return resp, nil
 }
 
-func (cln *Client) setHeaders(req *http.Request, body *bytes.Buffer) error {
+func (cln *Client) setHeaders(req *http.Request, data *bytes.Buffer) error {
 	// Set default header values
 	req.Header.Set("Cache-Control", "no-cache")
 	req.Header.Set("Content-Type", "application/json")
@@ -154,7 +154,7 @@ func (cln *Client) setHeaders(req *http.Request, body *bytes.Buffer) error {
 	authToken := fmt.Sprintf("SELCOM %s", base64Encode([]byte(cln.apiKey)))
 	digestMethod := "HS256"
 
-	signedFields, digest, timestamp, err := constructHeaderValues(cln, body)
+	signedFields, digest, timestamp, err := constructHeaders(cln, data)
 	if err != nil {
 		return err
 	}
@@ -173,28 +173,30 @@ func base64Encode(token []byte) string {
 	return base64.StdEncoding.EncodeToString(token)
 }
 
-func constructHeaderValues(cln *Client, body *bytes.Buffer) (string, string, string, error) {
+func constructHeaders(cln *Client, params *bytes.Buffer) (string, string, string, error) {
 	var (
 		signedFields string
 		digest       string
 	)
+
 	now := time.Now().Format(time.RFC3339)
 
 	var jsonData map[string]any
-	if err := json.Unmarshal(body.Bytes(), &jsonData); err != nil {
+	if err := json.Unmarshal(params.Bytes(), &jsonData); err != nil {
 		return signedFields, digest, now, fmt.Errorf("unmarshal error: %w", err)
 	}
 
 	data := fmt.Sprintf("timestamp=%s", now)
 	for k, v := range jsonData {
 		data = fmt.Sprintf("%s&%s=%v", data, k, v)
-		if len(signedFields) == 0 {
-			signedFields = k
+		if signedFields == "" {
+			signedFields = "timestamp," + k
 		} else {
 			signedFields = strings.Join([]string{signedFields, k}, ",")
 		}
 	}
 
+	// Generate the digest using the data.
 	mac := hmac.New(sha256.New, []byte(cln.apiSecret))
 	_, err := mac.Write([]byte(data))
 	if err != nil {
