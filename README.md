@@ -21,7 +21,7 @@ import (
 	"os"
 	"time"
 
-	"github.com/jkarage/selcompay-client"
+	client "github.com/jkarage/selcompay-client"
 )
 
 func main() {
@@ -40,37 +40,19 @@ func run() error {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
-	body := struct {
-		Vendor          string `json:"vendor"`
-		ID              string `json:"order_id"`
-		BuyerEmail      string `json:"buyer_email"`
-		BuyerName       string `json:"buyer_name"`
-		BuyerPhone      string `json:"buyer_phone"`
-		Amount          int    `json:"amount"`
-		Currency        string `json:"currency"`
-		RedirectURL     string `json:"redirect_url,omitempty"`
-		CancelURL       string `json:"cancel_url,omitempty"`
-		Webhook         string `json:"webhook,omitempty"`
-		BuyerRemarks    string `json:"buyer_remarks,omitempty"`
-		MerchantRemarks string `json:"merchant_remarks,omitempty"`
-		NumberItems     int    `json:"no_of_items"`
-		HeaderColour    string `json:"header_colour,omitempty"`
-		LinkColour      string `json:"link_colour,omitempty"`
-		ButtonColour    string `json:"button_colour,omitempty"`
-		Expiry          int    `json:"expiry,omitempty"`
-	}{
-		Vendor:      "XXXXXXXXXXXXX",
+	body := client.OrderInputMinimal{
+		Vendor:      "TILLXXXXXX",
 		ID:          uuid.NewString(),
 		BuyerEmail:  "example@gmail.com",
 		BuyerName:   "Joseph",
 		BuyerPhone:  "255XXXXXXXXX",
 		Amount:      1000,
-		Webhook:     base64.StdEncoding.EncodeToString([]byte("xxxxxxxxxxxxxx")),
+		Webhook:     base64.StdEncoding.EncodeToString([]byte("https://link.com/service")),
 		Currency:    "TZS",
 		NumberItems: 1,
 	}
 
-	resp, err := cln.CreateOrderMinimal(ctx, client.OrderInputMinimal(body))
+	resp, err := cln.CreateOrderMinimal(ctx, body)
 	if err != nil {
 		return "", err
 	}
