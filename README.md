@@ -32,8 +32,8 @@ func main() {
 
 func run() error {
 	host := "https://apigw.selcommobile.com"
-	apiKey := os.Getenv("SELCOMAPIKEY")
-    	apiSecret := os.Getenv("SELCOMSECRETKEY")
+	apiKey := os.Getenv("SELCOM_API_KEY")
+    	apiSecret := os.Getenv("SELCOM_SECRET_KEY")
 
 	cln := client.New(host, apiKey, apiSecret)
 
@@ -65,18 +65,17 @@ func run() error {
 		BuyerName:   "Joseph",
 		BuyerPhone:  "255XXXXXXXXX",
 		Amount:      1000,
-		Webhook:     base64.StdEncoding.EncodeToString([]byte("https://play.svix.com/in/e_ro77AzL7TPVLgY2yPdsR1KyQGBM/")),
+		Webhook:     base64.StdEncoding.EncodeToString([]byte("xxxxxxxxxxxxxx")),
 		Currency:    "TZS",
 		NumberItems: 1,
 	}
 
 	resp, err := cln.CreateOrderMinimal(ctx, client.OrderInputMinimal(body))
 	if err != nil {
-		fmt.Println("Failing: CreateOrderMinimal")
 		return "", err
 	}
 
-	fmt.Println(resp.Message)
+	fmt.Println(resp)
 
 	return nil
 }
