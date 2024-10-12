@@ -35,10 +35,18 @@ func run() error {
 	apiKey := os.Getenv("SELCOM_API_KEY")
     	apiSecret := os.Getenv("SELCOM_SECRET_KEY")
 
-	cln := client.New(host, apiKey, apiSecret)
-
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
+
+	logger := func(ctx context.Context, msg string, v ...any) {
+		s := fmt.Sprintf("msg: %s", msg)
+		for i := 0; i < len(v); i = i + 2 {
+			s = s + fmt.Sprintf(", %s: %v", v[i], v[i+1])
+		}
+		log.Println(s)
+	}
+
+	cln := client.New(logger, host, apiKey, apiSecret)
 
 	body := client.OrderInputMinimal{
 		Vendor:      "TILLXXXXXX",

@@ -53,7 +53,6 @@ type Client struct {
 // New constructs a client that can be used to talk to the selcompay api.
 func New(logger Logger, host string, apiKey string, apiSecret string, options ...func(cln *Client)) *Client {
 	cln := Client{
-		// Create a PR in golang/go to improve the TrimLeft doc.
 		log:       logger,
 		host:      strings.TrimLeft(host, "/"),
 		apiKey:    apiKey,
