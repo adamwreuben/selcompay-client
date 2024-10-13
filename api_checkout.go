@@ -6,7 +6,7 @@ import (
 	"net/http"
 )
 
-// OrderInput represents the inputfor the checkout order call.
+// OrderInput represents the input for the checkout order call.
 type OrderInput struct {
 	Vendor                string `json:"vendor"`
 	ID                    string `json:"order_id"`
@@ -175,8 +175,16 @@ func (cln *Client) FetchStoredCards(ctx context.Context, buyerUserID string, gat
 func (cln *Client) DeleteStoredCard(ctx context.Context, cardResourceID string, gatewayBuyerUUID string) (Response, error) {
 	url := fmt.Sprintf("%s/%s/checkout/delete-card?id=%s&gateway_buyer_uuid=%s", cln.host, version, cardResourceID, gatewayBuyerUUID)
 
+	body := struct {
+		ID               string `json:"id"`
+		GatewayBuyerUUID string `json:"gateway_buyer_uuid"`
+	}{
+		ID:               cardResourceID,
+		GatewayBuyerUUID: gatewayBuyerUUID,
+	}
+
 	var resp Response
-	if err := cln.do(ctx, http.MethodDelete, url, nil, &resp); err != nil {
+	if err := cln.do(ctx, http.MethodDelete, url, body, &resp); err != nil {
 		return Response{}, err
 	}
 
