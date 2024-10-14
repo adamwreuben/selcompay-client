@@ -60,7 +60,7 @@ func run() error {
 		BuyerName:   "Joseph",
 		BuyerPhone:  "255XXXXXXXXX",
 		Amount:      1000,
-		Webhook:     base64.StdEncoding.EncodeToString([]byte("https://link.com/service")),
+		Webhook:     "https://link.com/service",
 		Currency:    "TZS",
 		NumberItems: 1,
 	}
