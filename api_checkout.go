@@ -53,6 +53,11 @@ type OrderInput struct {
 func (cln *Client) CreateOrder(ctx context.Context, order OrderInput) (Response, error) {
 	url := fmt.Sprintf("%s/%s/checkout/create-order", cln.host, version)
 
+	// Encoding the webhook string as required.
+	if order.Webhook != "" {
+		order.Webhook = base64Encode([]byte(order.Webhook))
+	}
+
 	var resp Response
 	if err := cln.do(ctx, http.MethodPost, url, order, &resp); err != nil {
 		return Response{}, err
@@ -85,6 +90,11 @@ type OrderInputMinimal struct {
 // This is for non-card payments. Ideal for mobile wallet push payments and manual payments.
 func (cln *Client) CreateOrderMinimal(ctx context.Context, order OrderInputMinimal) (Response, error) {
 	url := fmt.Sprintf("%s/%s/checkout/create-order-minimal", cln.host, version)
+
+	// Ecoding the webhook string as required.
+	if order.Webhook != "" {
+		order.Webhook = base64Encode([]byte(order.Webhook))
+	}
 
 	var resp Response
 	if err := cln.do(ctx, http.MethodPost, url, order, &resp); err != nil {

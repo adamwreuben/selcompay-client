@@ -47,6 +47,7 @@ func main() {
 		BillingCountry:       "TZ",
 		BillingPhone:         "255713507067",
 		NumberItems:          1,
+		Webhook:              "https://play.svix.com/memesample",
 	}
 
 	resp, err := cln.CreateOrder(ctx, input)
