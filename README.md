@@ -4,9 +4,6 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/jkarage/selcompay-client)](https://goreportcard.com/report/github.com/jkarage/selcompay-client)
 [![go.mod Go version](https://img.shields.io/badge/Go-v1.23.1-blue)](https://github.com/Jkarage/selcompay-client)
 
-
-Copyright 2024 Tausi Africa
-
 ### Description
 
 This Module provides functionality developed to simplify interfacing with [SelcomPay API](https://developers.selcommobile.com/) in Go.
