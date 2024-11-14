@@ -1,4 +1,4 @@
-module github.com/jkarage/selcompay-client
+module github.com/Golang-Tanzania/selcompay-client
 
 go 1.23.1
 

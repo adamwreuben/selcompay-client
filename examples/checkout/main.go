@@ -7,8 +7,8 @@ import (
 	"os"
 	"time"
 
+	client "github.com/Golang-Tanzania/selcompay-client"
 	"github.com/google/uuid"
-	client "github.com/jkarage/selcompay-client"
 )
 
 func main() {
