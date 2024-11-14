@@ -1,8 +1,8 @@
 # Selcompay Go Client
 
 [![CircleCI](https://dl.circleci.com/status-badge/img/circleci/Cy6tWW4wpE69Ftb8vdTAN9/E2TBj5h2YvKmwX36hcykvy/tree/main.svg?style=svg)](https://app.circleci.com/pipelines/github/Jkarage/selcompay-client)
-[![Go Report Card](https://goreportcard.com/badge/github.com/jkarage/selcompay-client)](https://goreportcard.com/report/github.com/jkarage/selcompay-client)
-[![go.mod Go version](https://img.shields.io/badge/Go-v1.23.1-blue)](https://github.com/Jkarage/selcompay-client)
+[![Go Report Card](https://goreportcard.com/badge/github.com/Golang-Tanzania/selcompay-client)](https://goreportcard.com/report/github.com/Golang-Tanzania/selcompay-client)
+[![go.mod Go version](https://img.shields.io/badge/Go-v1.23.1-blue)](https://github.com/Golang-Tanzania/selcompay-client)
 
 ### Description
 
@@ -13,6 +13,7 @@ This Module provides functionality developed to simplify interfacing with [Selco
 To access the API, contact [SelcomPay](https://www.selcom.net/selcom-pay-)
 
 ### Usage
+
 ```go
 package main
 
@@ -23,7 +24,7 @@ import (
 	"os"
 	"time"
 
-	client "github.com/jkarage/selcompay-client"
+	client "github.com/Golang-Tanzania/selcompay-client"
 )
 
 func main() {
@@ -72,7 +73,3 @@ func run() error {
 	return nil
 }
 ```
-
-
-
-
