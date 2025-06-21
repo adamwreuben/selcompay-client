@@ -48,24 +48,6 @@ type OrderInput struct {
 	Expiry                int    `json:"expiry,omitempty"`
 }
 
-// CreateOrder creates a payment order request to the selcom payment gateway.
-// Responds with the payment url, buyer details.
-func (cln *Client) CreateOrder(ctx context.Context, order OrderInput) (Response, error) {
-	url := fmt.Sprintf("%s/%s/checkout/create-order", cln.host, version)
-
-	// Encoding the webhook string as required.
-	if order.Webhook != "" {
-		order.Webhook = base64Encode([]byte(order.Webhook))
-	}
-
-	var resp Response
-	if err := cln.do(ctx, http.MethodPost, url, order, &resp); err != nil {
-		return Response{}, err
-	}
-
-	return resp, nil
-}
-
 type OrderInputMinimal struct {
 	Vendor          string `json:"vendor"`
 	ID              string `json:"order_id"`
@@ -86,6 +68,38 @@ type OrderInputMinimal struct {
 	Expiry          int    `json:"expiry,omitempty"`
 }
 
+type ProcessOrderRequest struct {
+	TransId string `json:"transId"`  //Unique transaction ID
+	OrderId string `json:"order_id"` // Order ID
+	Msisdn  string `json:"msisdn"`
+}
+
+type ProcessOrderResponse struct {
+	Reference  string        `json:"reference"`
+	Resultcode string        `json:"resultcode"`
+	Result     string        `json:"result"`
+	Message    string        `json:"message"`
+	Data       []interface{} `json:"data"`
+}
+
+// CreateOrder creates a payment order request to the selcom payment gateway.
+// Responds with the payment url, buyer details.
+func (cln *Client) CreateOrder(ctx context.Context, order OrderInput) (Response, error) {
+	url := fmt.Sprintf("%s/%s/checkout/create-order", cln.host, version)
+
+	// Encoding the webhook string as required.
+	if order.Webhook != "" {
+		order.Webhook = base64Encode([]byte(order.Webhook))
+	}
+
+	var resp Response
+	if err := cln.do(ctx, http.MethodPost, url, order, &resp); err != nil {
+		return Response{}, err
+	}
+
+	return resp, nil
+}
+
 // CreateOrderMinimal creates a payment order request to the selcom payment gateway.
 // This is for non-card payments. Ideal for mobile wallet push payments and manual payments.
 func (cln *Client) CreateOrderMinimal(ctx context.Context, order OrderInputMinimal) (Response, error) {
@@ -99,6 +113,21 @@ func (cln *Client) CreateOrderMinimal(ctx context.Context, order OrderInputMinim
 	var resp Response
 	if err := cln.do(ctx, http.MethodPost, url, order, &resp); err != nil {
 		return Response{}, err
+	}
+
+	return resp, nil
+}
+
+// Process Order - Wallet Pull Payment
+// Process Order api allows the ecommerce website to process an order using mobile wallets directly without redirecting the user to payment gateway page.
+// Can be used for in-app payments where users can select linked mobile numbers, tigger this api call to reiceve a PUSH ussd from the mobile wallet to complete the transaction.
+
+func (cln *Client) ProcessOrder(ctx context.Context, order ProcessOrderRequest) (ProcessOrderResponse, error) {
+	url := fmt.Sprintf("%s/%s/checkout/wallet-payment", cln.host, version)
+
+	var resp ProcessOrderResponse
+	if err := cln.do(ctx, http.MethodPost, url, order, &resp); err != nil {
+		return ProcessOrderResponse{}, err
 	}
 
 	return resp, nil
