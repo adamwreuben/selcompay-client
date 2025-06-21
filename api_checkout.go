@@ -121,7 +121,7 @@ func (cln *Client) CreateOrderMinimal(ctx context.Context, order OrderInputMinim
 // Process Order - Wallet Pull Payment
 // Process Order api allows the ecommerce website to process an order using mobile wallets directly without redirecting the user to payment gateway page.
 // Can be used for in-app payments where users can select linked mobile numbers, tigger this api call to reiceve a PUSH ussd from the mobile wallet to complete the transaction.
-
+// THIS COMPLETES USSD-PUSH REQ.(neccessary step, since order can be invoded later in time)
 func (cln *Client) ProcessOrder(ctx context.Context, order ProcessOrderRequest) (ProcessOrderResponse, error) {
 	url := fmt.Sprintf("%s/%s/checkout/wallet-payment", cln.host, version)
 
